@@ -1,0 +1,23 @@
+@model DLAttendance.ViewModels.RoleEditViewModel
+
+@{
+    ViewData["Title"] = "Add Role";
+}
+
+<h1 class="h3 mb-3">Add Role</h1>
+
+<form asp-action="Create" method="post" class="border rounded p-3">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

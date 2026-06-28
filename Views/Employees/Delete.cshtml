@@ -1,0 +1,27 @@
+@model DLAttendance.Models.DlEmployee
+
+@{
+    ViewData["Title"] = "Delete DL Employee";
+}
+
+<h1 class="h3 mb-3">Delete DL Employee</h1>
+
+<div class="alert alert-warning">This will permanently remove this employee from the master list.</div>
+
+<dl class="row border rounded p-3">
+    <dt class="col-sm-3">Employee ID</dt>
+    <dd class="col-sm-9">@Model.EmployeeCode</dd>
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.Name</dd>
+    <dt class="col-sm-3">Vendor</dt>
+    <dd class="col-sm-9">@Model.Vendor</dd>
+    <dt class="col-sm-3">Category</dt>
+    <dd class="col-sm-9">@Model.Category</dd>
+</dl>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

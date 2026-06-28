@@ -1,0 +1,57 @@
+@model DLAttendance.ViewModels.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-1">Dashboard</h1>
+        <div class="text-muted">DL attendance overview for today and the last seven days.</div>
+    </div>
+    <a asp-controller="Attendance" asp-action="Create" class="btn btn-primary">Add Attendance</a>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="text-muted">DL Employees</div>
+            <div class="metric">@Model.EmployeeCount</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="text-muted">Present Today</div>
+            <div class="metric text-success">@Model.TodayPresent</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="text-muted">Absent Today</div>
+            <div class="metric text-danger">@Model.TodayAbsent</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="dashboard-card">
+            <div class="text-muted">Leave Today</div>
+            <div class="metric text-warning">@Model.TodayLeave</div>
+        </div>
+    </div>
+</div>
+
+<section class="dashboard-card">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 mb-0">One Week Attendance</h2>
+        <span class="text-muted">By day</span>
+    </div>
+    <div class="week-bars">
+        @foreach (var item in Model.WeekAttendance)
+        {
+            <div class="week-bar">
+                <div class="fw-semibold">@item.Count</div>
+                <div class="week-bar-fill" style="height:@item.HeightPercent%"></div>
+                <div class="week-bar-label">@item.Day<br />@item.Date.ToString("dd-MMM")</div>
+            </div>
+        }
+    </div>
+</section>

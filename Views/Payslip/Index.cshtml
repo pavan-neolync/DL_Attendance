@@ -1,0 +1,121 @@
+@model DLAttendance.ViewModels.PayslipIndexViewModel
+
+@{
+    ViewData["Title"] = "Payslips";
+    var paged = Model.PagedPayslips;
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div>
+        <h1 class="h3 mb-0">Payslips</h1>
+        <div class="text-muted">Generate and print salary statements for DL employees.</div>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Generate" class="btn btn-primary">Generate Payslip</a>
+    }
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="alert alert-info">@message</div>
+}
+
+<form method="get" class="border rounded p-3 mb-3 bg-light" data-auto-search>
+    <input type="hidden" name="page" value="@paged.Page" />
+    <input type="hidden" name="pageSize" value="@paged.PageSize" />
+    <div class="row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label" for="search">Search</label>
+            <input class="form-control" id="search" name="search" value="@Model.Search" placeholder="Employee ID or name" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" for="month">Month</label>
+            <select class="form-select" id="month" name="month">
+                <option value="">All</option>
+                @for (var m = 1; m <= 12; m++)
+                {
+                    if (Model.Month == m)
+                    {
+                        <option value="@m" selected>@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option>
+                    }
+                    else
+                    {
+                        <option value="@m">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" for="year">Year</label>
+            <input class="form-control" id="year" name="year" type="number" value="@Model.Year" placeholder="Year" />
+        </div>
+        <div class="col-md-3 d-grid">
+            <button class="btn btn-outline-secondary" type="button" data-clear-filters>Clear</button>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>Name</th>
+                <th>Period</th>
+                <th>Bank</th>
+                <th>Account</th>
+                <th>UAN</th>
+                <th>ESIC</th>
+                <th>Days Worked</th>
+                <th>Net Pay</th>
+                <th class="text-end">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in paged.Items)
+            {
+                var employee = item.DlEmployee!;
+                var netPay = item.BasicEarnings + item.HraEarnings + item.SpecialAllowanceEarnings
+                    - item.PfDeduction - item.VpfDeduction - item.IncomeTaxDeduction
+                    - item.ProfessionTaxDeduction - item.EsicDeduction;
+                <tr>
+                    <td>@employee.EmployeeCode</td>
+                    <td>@employee.Name</td>
+                    <td>@($"{new DateTime(item.Year, item.Month, 1):MMMM yyyy}")</td>
+                    <td>@employee.BankName</td>
+                    <td>@employee.AccountNumber</td>
+                    <td>@employee.Uan</td>
+                    <td>@employee.EsicNumber</td>
+                    <td>@item.DaysWorked</td>
+                    <td>@((long)netPay)</td>
+                    <td class="text-end">
+                        <a asp-action="Print" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary" target="_blank">View / Print</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!paged.Items.Any())
+{
+    <div class="alert alert-secondary">No payslips found. Generate payslips to get started.</div>
+}
+
+@{
+    var pagination = new PaginationViewModel
+    {
+        Page = paged.Page,
+        PageSize = paged.PageSize,
+        TotalCount = paged.TotalCount,
+        Controller = "Payslip",
+        RouteValues = new Dictionary<string, string?>
+        {
+            ["search"] = Model.Search,
+            ["month"] = Model.Month?.ToString(),
+            ["year"] = Model.Year?.ToString()
+        }
+    };
+}
+<partial name="_Pagination" model="pagination" />

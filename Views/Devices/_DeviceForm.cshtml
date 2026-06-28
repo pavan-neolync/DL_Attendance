@@ -1,0 +1,33 @@
+﻿@model DLAttendance.Models.Device
+
+<div class="mb-3">
+    <label asp-for="DeviceName" class="form-label"></label>
+    <input asp-for="DeviceName" class="form-control" />
+    <span asp-validation-for="DeviceName" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="IpAddress" class="form-label"></label>
+    <input asp-for="IpAddress" class="form-control" />
+    <span asp-validation-for="IpAddress" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="SerialNumber" class="form-label"></label>
+    <input asp-for="SerialNumber" class="form-control" />
+    <span asp-validation-for="SerialNumber" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Location" class="form-label"></label>
+    <input asp-for="Location" class="form-control" />
+    <span asp-validation-for="Location" class="text-danger"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Status" class="form-label"></label>
+    <select asp-for="Status"
+            asp-items="Html.GetEnumSelectList<DeviceStatus>()"
+            class="form-select">
+    </select>
+</div>

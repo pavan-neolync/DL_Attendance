@@ -1,0 +1,84 @@
+@model DLAttendance.Models.DlEmployee
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="mb-4">
+    <h1 class="h3 mb-0">My Profile</h1>
+    <div class="text-muted">Your personal and employment details.</div>
+</div>
+
+<div class="card shadow-sm" style="max-width:680px;">
+    <div class="card-body">
+
+        <div class="d-flex align-items-center gap-4 mb-4 pb-3 border-bottom">
+            <div style="width:90px;height:90px;border-radius:50%;background:#e9ecef;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="#adb5bd" viewBox="0 0 16 16">
+                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                    <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+                </svg>
+            </div>
+            <div>
+                <h4 class="mb-1">@Model.Name</h4>
+                <span class="badge bg-secondary">@Model.EmployeeCode</span>
+                @if (!string.IsNullOrWhiteSpace(Model.Designation))
+                {
+                    <div class="text-muted mt-1">@Model.Designation</div>
+                }
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-6">
+                <div class="text-muted small">Employee ID</div>
+                <div class="fw-semibold">@Model.EmployeeCode</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Name</div>
+                <div class="fw-semibold">@Model.Name</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">BU</div>
+                <div>@(Model.BuName ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Vendor</div>
+                <div>@(Model.Vendor ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Gender</div>
+                <div>@(Model.Gender ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Birth Date</div>
+                <div>@(Model.BirthDate?.ToString("dd-MMM-yyyy") ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Age</div>
+                <div>@(Model.Age?.ToString() ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Join Date</div>
+                <div>@(Model.JoinDate?.ToString("dd-MMM-yyyy") ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Aadhaar No</div>
+                <div>@(Model.Aadhaar ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">UAN</div>
+                <div>@(Model.Uan ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">ESIC Number</div>
+                <div>@(Model.EsicNumber ?? "-")</div>
+            </div>
+            <div class="col-sm-6">
+                <div class="text-muted small">Bank Name</div>
+                <div>@(Model.BankName ?? "-")</div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,27 @@
+@model DLAttendance.Models.DlAttendanceRecord
+
+@{
+    ViewData["Title"] = "Delete DL Attendance";
+}
+
+<h1 class="h3 mb-3">Delete DL Attendance</h1>
+
+<div class="alert alert-warning">This will permanently remove this attendance record.</div>
+
+<dl class="row border rounded p-3">
+    <dt class="col-sm-3">Date</dt>
+    <dd class="col-sm-9">@Model.WorkDate.ToString("yyyy-MM-dd")</dd>
+    <dt class="col-sm-3">DL Code</dt>
+    <dd class="col-sm-9">@Model.DlCode</dd>
+    <dt class="col-sm-3">Name</dt>
+    <dd class="col-sm-9">@Model.FullName</dd>
+    <dt class="col-sm-3">Status</dt>
+    <dd class="col-sm-9">@Model.Status</dd>
+</dl>
+
+<form asp-action="Delete" method="post" class="d-flex gap-2">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <button class="btn btn-danger" type="submit">Delete</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>

@@ -1,0 +1,130 @@
+@model DLAttendance.ViewModels.PayslipViewModel
+
+<div class="payslip-sheet">
+    <div class="payslip-header">
+        <div class="payslip-brand">
+            <img src="~/images/neolync-logo.png" alt="NeoLync" class="payslip-logo" />
+            <span class="payslip-brand-text">NeoLync</span>
+        </div>
+        <div class="payslip-company">@Model.CompanyName</div>
+        <div class="payslip-address">@Model.CompanyAddress</div>
+        <div class="payslip-title">@Model.StatementTitle</div>
+    </div>
+
+    <div class="payslip-rule"></div>
+
+    <div class="payslip-info">
+        <div class="payslip-info-col">
+            <div class="payslip-row"><span class="payslip-label">EMP NO</span><span class="payslip-value">@Model.EmployeeCode</span></div>
+            <div class="payslip-row"><span class="payslip-label">NAME</span><span class="payslip-value">@Model.EmployeeName</span></div>
+            <div class="payslip-row"><span class="payslip-label">LOCATION</span><span class="payslip-value">@Model.Location</span></div>
+            <div class="payslip-row"><span class="payslip-label">GENDER</span><span class="payslip-value">@Model.Gender</span></div>
+            <div class="payslip-row"><span class="payslip-label">DESIGNATION</span><span class="payslip-value">@Model.Designation</span></div>
+            <div class="payslip-row"><span class="payslip-label">DEPARTMENT</span><span class="payslip-value">@Model.Department</span></div>
+            <div class="payslip-row"><span class="payslip-label">PF NO</span><span class="payslip-value">@Model.PfNumber</span></div>
+            <div class="payslip-row"><span class="payslip-label">ESIC NO</span><span class="payslip-value">@Model.EsicNumber</span></div>
+        </div>
+        <div class="payslip-info-col">
+            <div class="payslip-row"><span class="payslip-label">BANK A/C NO</span><span class="payslip-value">@Model.AccountNumber</span></div>
+            <div class="payslip-row"><span class="payslip-label">BANK NAME</span><span class="payslip-value">@Model.BankName</span></div>
+            <div class="payslip-row"><span class="payslip-label">DOJ</span><span class="payslip-value">@Model.JoinDate</span></div>
+            <div class="payslip-row"><span class="payslip-label">DOB</span><span class="payslip-value">@Model.BirthDate</span></div>
+            <div class="payslip-row"><span class="payslip-label">PAN NO</span><span class="payslip-value">@Model.PanNumber</span></div>
+            <div class="payslip-row"><span class="payslip-label">DAYS WORKED</span><span class="payslip-value">@Model.DaysWorked</span></div>
+            <div class="payslip-row"><span class="payslip-label">PF UAN</span><span class="payslip-value">@Model.Uan</span></div>
+        </div>
+    </div>
+
+    <div class="payslip-rule"></div>
+
+    <table class="payslip-table">
+        <thead>
+            <tr>
+                <th class="text-start">PARTICULARS</th>
+                <th class="text-end">RATE</th>
+                <th class="text-end">EARNINGS</th>
+                <th class="payslip-split"></th>
+                <th class="text-start">PARTICULARS</th>
+                <th class="text-end">DEDUCTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>BASIC</td>
+                <td class="text-end">@FormatAmount(Model.BasicRate)</td>
+                <td class="text-end">@FormatAmount(Model.BasicEarnings)</td>
+                <td class="payslip-split"></td>
+                <td>P.F.</td>
+                <td class="text-end">@FormatAmount(Model.PfDeduction)</td>
+            </tr>
+            <tr>
+                <td>HRA</td>
+                <td class="text-end">@FormatAmount(Model.HraRate)</td>
+                <td class="text-end">@FormatAmount(Model.HraEarnings)</td>
+                <td class="payslip-split"></td>
+                <td>V.P.F.</td>
+                <td class="text-end">@FormatAmount(Model.VpfDeduction)</td>
+            </tr>
+            <tr>
+                <td>SPECIAL ALLOWANCE</td>
+                <td class="text-end">@FormatAmount(Model.SpecialAllowanceRate)</td>
+                <td class="text-end">@FormatAmount(Model.SpecialAllowanceEarnings)</td>
+                <td class="payslip-split"></td>
+                <td>INCOME TAX DEDUCTION</td>
+                <td class="text-end">@FormatAmount(Model.IncomeTaxDeduction)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="payslip-split"></td>
+                <td>PROFESSION TAX</td>
+                <td class="text-end">@FormatAmount(Model.ProfessionTaxDeduction)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td class="payslip-split"></td>
+                <td>ESIC</td>
+                <td class="text-end">@FormatAmount(Model.EsicDeduction)</td>
+            </tr>
+            <tr class="payslip-total-row">
+                <td colspan="2">GROSS EARNINGS</td>
+                <td class="text-end">@FormatAmount(Model.GrossEarnings)</td>
+                <td class="payslip-split"></td>
+                <td>TOTAL DEDUCTIONS</td>
+                <td class="text-end">@FormatAmount(Model.TotalDeductions)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="payslip-rule"></div>
+
+    <div class="payslip-net">
+        <div class="payslip-net-row">
+            <span>NET PAY</span>
+            <span>@FormatAmount(Model.NetPay)</span>
+        </div>
+        <div class="payslip-words">(@Model.NetPayInWords)</div>
+    </div>
+
+    @if (Model.LopDetails.Any())
+    {
+        <div class="payslip-rule"></div>
+        <div class="payslip-lop">
+            <div class="payslip-lop-title">LOP Details</div>
+            @foreach (var line in Model.LopDetails)
+            {
+                <div>@line</div>
+            }
+        </div>
+    }
+
+    <div class="payslip-rule"></div>
+    <div class="payslip-footer">This is computer generated payslip and does not require a signature</div>
+</div>
+
+@functions {
+    private static string FormatAmount(decimal value) => ((long)value).ToString();
+}

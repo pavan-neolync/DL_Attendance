@@ -1,0 +1,19 @@
+@model DLAttendance.ViewModels.UserEditViewModel
+
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h1 class="h3 mb-3">Edit User</h1>
+
+<form asp-action="Edit" method="post" class="border rounded p-3">
+    @Html.AntiForgeryToken()
+    <partial name="_Form" model="Model" />
+    <div class="form-text mb-3">Leave password blank to keep the existing password.</div>
+    <button class="btn btn-primary" type="submit">Save Changes</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

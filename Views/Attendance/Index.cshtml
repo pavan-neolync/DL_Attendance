@@ -1,0 +1,158 @@
+@model DLAttendance.ViewModels.AttendanceIndexViewModel
+@using DLAttendance.Models
+
+@{
+    ViewData["Title"] = "DL Attendance";
+    var isAdmin = User.IsInRole("Admin");
+    var paged = Model.PagedRecords;
+}
+
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+    <div>
+        <h1 class="h3 mb-0">DL Attendance</h1>
+        <div class="text-muted">Search, add, import, export, edit, and delete attendance entries.</div>
+    </div>
+    @if (isAdmin)
+    {
+        <a asp-action="Create" class="btn btn-primary">Add DL</a>
+    }
+</div>
+
+@if (TempData["Message"] is string message)
+{
+    <div class="alert alert-info">@message</div>
+}
+
+<form method="get" class="border rounded p-3 mb-3 bg-light" data-auto-search>
+    <input type="hidden" name="page" value="@paged.Page" />
+    <input type="hidden" name="pageSize" value="@paged.PageSize" />
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label" asp-for="Search"></label>
+            <input class="form-control" asp-for="Search" placeholder="Code, name, department, contractor" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" asp-for="FromDate"></label>
+            <input class="form-control" asp-for="FromDate" type="date" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" asp-for="ToDate"></label>
+            <input class="form-control" asp-for="ToDate" type="date" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label" asp-for="Status"></label>
+            <select class="form-select" asp-for="Status">
+                <option value="">All</option>
+                @foreach (var item in Html.GetEnumSelectList<AttendanceStatus>())
+                {
+                    <option value="@item.Text">@item.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-outline-secondary" type="button" data-clear-filters>Clear</button>
+        </div>
+    </div>
+</form>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+    <a class="btn btn-success" asp-action="Export" asp-route-search="@Model.Search" asp-route-fromDate="@Model.FromDate?.ToString("yyyy-MM-dd")" asp-route-toDate="@Model.ToDate?.ToString("yyyy-MM-dd")" asp-route-status="@Model.Status">Export Excel</a>
+    @if (isAdmin)
+    {
+        <form asp-action="Import" method="post" enctype="multipart/form-data" class="d-flex flex-wrap gap-2">
+            @Html.AntiForgeryToken()
+            <input type="file" name="file" accept=".xlsx" class="form-control" />
+            <button class="btn btn-outline-success" type="submit">Upload Excel</button>
+        </form>
+    }
+</div>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>DL Code</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Contractor</th>
+                <th>Shift</th>
+                <th>Status</th>
+                <th>In</th>
+                <th>Out</th>
+                @if (isAdmin)
+                {
+                    <th class="text-end">Actions</th>
+                }
+                else
+                {
+                    <th>Working Hours</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in paged.Items)
+            {
+                <tr>
+                    <td>@item.WorkDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.DlCode</td>
+                    <td>@item.FullName</td>
+                    <td>@item.Department</td>
+                    <td>@item.Contractor</td>
+                    <td>@item.Shift</td>
+                    <td>@item.Status</td>
+                    <td>@item.InTime?.ToString(@"hh\:mm")</td>
+                    <td>@item.OutTime?.ToString(@"hh\:mm")</td>
+                    @if (isAdmin)
+                    {
+                        <td class="text-end">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @{
+                                TimeSpan? worked = null;
+                                if (item.InTime.HasValue && item.OutTime.HasValue)
+                                {
+                                    var diff = item.OutTime.Value - item.InTime.Value;
+                                    if (diff < TimeSpan.Zero)
+                                    {
+                                        diff += TimeSpan.FromHours(24);
+                                    }
+                                    worked = diff;
+                                }
+                            }
+                            @(worked.HasValue ? $"{(int)worked.Value.TotalHours:00}h {worked.Value.Minutes:00}m" : "-")
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!paged.Items.Any())
+{
+    <div class="alert alert-secondary">No attendance records found.</div>
+}
+
+@{
+    var pagination = new PaginationViewModel
+    {
+        Page = paged.Page,
+        PageSize = paged.PageSize,
+        TotalCount = paged.TotalCount,
+        Controller = "Attendance",
+        RouteValues = new Dictionary<string, string?>
+        {
+            ["search"] = Model.Search,
+            ["fromDate"] = Model.FromDate?.ToString("yyyy-MM-dd"),
+            ["toDate"] = Model.ToDate?.ToString("yyyy-MM-dd"),
+            ["status"] = Model.Status
+        }
+    };
+}
+<partial name="_Pagination" model="pagination" />

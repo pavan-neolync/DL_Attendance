@@ -1,0 +1,107 @@
+@model DLAttendance.ViewModels.DeviceIndexViewModel
+
+@{
+    ViewData["Title"] = "Devices";
+    var paged = Model.PagedDevices;
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <h2>Devices</h2>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add Device
+        </a>
+    }
+</div>
+
+<form method="get" class="border rounded p-3 mb-3 bg-light" data-auto-search>
+    <input type="hidden" name="page" value="@paged.Page" />
+    <input type="hidden" name="pageSize" value="@paged.PageSize" />
+    <div class="row g-2 align-items-end">
+        <div class="col-md-10">
+            <label class="form-label" for="search">Search</label>
+            <input type="text" id="search" name="search" value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search Device/IP/Serial/Location" />
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="button" class="btn btn-outline-secondary" data-clear-filters>Clear</button>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Device Name</th>
+                <th>IP Address</th>
+                <th>Serial Number</th>
+                <th>Location</th>
+                <th>Status</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Updated</th>
+                    <th>Action</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in paged.Items)
+            {
+                <tr>
+                    <td>@item.DeviceName</td>
+                    <td>@item.IpAddress</td>
+                    <td>@item.SerialNumber</td>
+                    <td>@item.Location</td>
+                    <td>
+                        @if (item.Status == DLAttendance.Models.DeviceStatus.Active)
+                        {
+                            <span class="badge bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Inactive</span>
+                        }
+                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>@item.UpdatedAt.ToString("dd-MMM-yyyy HH:mm")</td>
+                        <td>
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (!paged.Items.Any())
+{
+    <div class="alert alert-secondary">No devices found.</div>
+}
+
+@{
+    var pagination = new PaginationViewModel
+    {
+        Page = paged.Page,
+        PageSize = paged.PageSize,
+        TotalCount = paged.TotalCount,
+        Controller = "Devices",
+        RouteValues = new Dictionary<string, string?> { ["search"] = Model.Search }
+    };
+}
+<partial name="_Pagination" model="pagination" />

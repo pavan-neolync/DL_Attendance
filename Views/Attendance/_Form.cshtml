@@ -1,0 +1,57 @@
+@model DLAttendance.Models.DlAttendanceRecord
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-12">
+        <label asp-for="DlEmployeeId" class="form-label"></label>
+        <select asp-for="DlEmployeeId" asp-items="ViewBag.Employees" class="form-select">
+            <option value="">Manual entry</option>
+        </select>
+        <div class="form-text">Choose from DL Employee Master to auto-fill code, name, BU, and vendor.</div>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="DlCode" class="form-label"></label>
+        <input asp-for="DlCode" class="form-control" />
+        <span asp-validation-for="DlCode" class="text-danger"></span>
+    </div>
+    <div class="col-md-5">
+        <label asp-for="FullName" class="form-label"></label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="WorkDate" class="form-label"></label>
+        <input asp-for="WorkDate" class="form-control" type="date" />
+        <span asp-validation-for="WorkDate" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Department" class="form-label"></label>
+        <input asp-for="Department" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Contractor" class="form-label"></label>
+        <input asp-for="Contractor" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Shift" class="form-label"></label>
+        <input asp-for="Shift" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" asp-items="Html.GetEnumSelectList<DLAttendance.Models.AttendanceStatus>()" class="form-select"></select>
+    </div>
+    <div class="col-md-3">
+        <label asp-for="InTime" class="form-label"></label>
+        <input asp-for="InTime" class="form-control" type="time" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="OutTime" class="form-label"></label>
+        <input asp-for="OutTime" class="form-control" type="time" />
+    </div>
+    <div class="col-md-6">
+        <label asp-for="Remarks" class="form-label"></label>
+        <input asp-for="Remarks" class="form-control" />
+    </div>
+</div>

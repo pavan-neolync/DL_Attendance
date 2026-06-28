@@ -1,0 +1,27 @@
+﻿@model DLAttendance.Models.Device
+
+@{
+    ViewData["Title"] = "Create Device";
+}
+
+<h2>Create Device</h2>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <partial name="_DeviceForm" model="Model" />
+
+    <button type="submit" class="btn btn-success">
+        Save
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back
+    </a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

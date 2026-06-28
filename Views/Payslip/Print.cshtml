@@ -1,0 +1,20 @@
+@model DLAttendance.ViewModels.PayslipViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payslip - @Model.EmployeeCode</title>
+    <link rel="stylesheet" href="~/css/payslip.css" asp-append-version="true" />
+</head>
+<body class="payslip-print-body">
+    <div class="payslip-toolbar no-print">
+        <button type="button" onclick="window.print()">Print Payslip</button>
+        <a href="javascript:history.back()">Back</a>
+    </div>
+    <partial name="_PayslipDocument" model="Model" />
+</body>
+</html>

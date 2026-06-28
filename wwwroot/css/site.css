@@ -1,0 +1,140 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+  background: #f5f7fb;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+.login-shell {
+  min-height: calc(100vh - 170px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 12px;
+}
+
+.login-panel {
+  width: min(100%, 430px);
+  background: #eef4ff;
+  border: 1px solid #cddcf7;
+  border-radius: 8px;
+  box-shadow: 0 14px 42px rgba(31, 47, 78, 0.16);
+  padding: 32px;
+}
+
+.login-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 26px;
+}
+
+.login-heading h1 {
+  font-size: 1.55rem;
+  margin: 0;
+}
+
+.login-heading p {
+  margin: 2px 0 0;
+  color: #5b6b84;
+}
+
+.login-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: #174ea6;
+  color: white;
+  font-weight: 700;
+}
+
+.dashboard-card {
+  border: 1px solid #d8dee8;
+  border-radius: 8px;
+  background: white;
+  padding: 18px;
+}
+
+.dashboard-card .metric {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.week-bars {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(70px, 1fr));
+  gap: 14px;
+  min-height: 260px;
+  align-items: end;
+}
+
+.week-bar {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+}
+
+.week-bar-fill {
+  width: 100%;
+  max-width: 72px;
+  min-height: 8px;
+  border-radius: 6px 6px 0 0;
+  background: #2f6fed;
+}
+
+.week-bar-label {
+  color: #556273;
+  font-size: 0.9rem;
+}
+
+.employee-master-table {
+  min-width: 1800px;
+  font-size: 0.88rem;
+}
+
+.employee-master-table th,
+.employee-master-table td {
+  white-space: nowrap;
+}
+
+.employee-master-table .employee-actions-col {
+  position: sticky;
+  right: 0;
+  min-width: 150px;
+  background: #f8fafc;
+  box-shadow: -8px 0 12px rgba(15, 23, 42, 0.08);
+  z-index: 2;
+}
+
+.employee-master-table thead .employee-actions-col {
+  background: white;
+  z-index: 3;
+}

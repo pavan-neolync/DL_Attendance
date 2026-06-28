@@ -1,0 +1,109 @@
+@model DLAttendance.Models.DlEmployee
+
+<div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+<input type="hidden" asp-for="Id" />
+
+<div class="row g-3">
+    <div class="col-md-3">
+        <label asp-for="EmployeeCode" class="form-label"></label>
+        <input asp-for="EmployeeCode" class="form-control" />
+        <span asp-validation-for="EmployeeCode" class="text-danger"></span>
+    </div>
+    <div class="col-md-5">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="col-md-4">
+        <label asp-for="BuName" class="form-label"></label>
+        <input asp-for="BuName" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Gender" class="form-label"></label>
+        <input asp-for="Gender" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Age" class="form-label"></label>
+        <input asp-for="Age" class="form-control" id="ageField" readonly style="background-color:#f8f9fa;" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="BirthDate" class="form-label"></label>
+        <input asp-for="BirthDate" type="date" class="form-control" id="birthDateField" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="JoinDate" class="form-label"></label>
+        <input asp-for="JoinDate" type="date" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Vendor" class="form-label"></label>
+        <input asp-for="Vendor" class="form-control" />
+    </div>
+    <div class="col-md-2">
+        <label asp-for="Category" class="form-label"></label>
+        <input asp-for="Category" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="MobileNumber" class="form-label"></label>
+        <input asp-for="MobileNumber" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Aadhaar" class="form-label"></label>
+        <input asp-for="Aadhaar" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="Uan" class="form-label"></label>
+        <input asp-for="Uan" class="form-control" />
+    </div>
+    <div class="col-md-3">
+        <label asp-for="EsicNumber" class="form-label"></label>
+        <input asp-for="EsicNumber" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="BankName" class="form-label"></label>
+        <input asp-for="BankName" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="AccountNumber" class="form-label"></label>
+        <input asp-for="AccountNumber" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="IfscCode" class="form-label"></label>
+        <input asp-for="IfscCode" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Designation" class="form-label"></label>
+        <input asp-for="Designation" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="Location" class="form-label"></label>
+        <input asp-for="Location" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="PanNumber" class="form-label"></label>
+        <input asp-for="PanNumber" class="form-control" />
+    </div>
+    <div class="col-md-4">
+        <label asp-for="PfNumber" class="form-label"></label>
+        <input asp-for="PfNumber" class="form-control" />
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            function calcAge() {
+                var dob = document.getElementById('birthDateField').value;
+                var ageField = document.getElementById('ageField');
+                if (!dob) { ageField.value = ''; return; }
+                var today = new Date();
+                var birth = new Date(dob);
+                var age = today.getFullYear() - birth.getFullYear();
+                var m = today.getMonth() - birth.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age--;
+                ageField.value = age >= 0 ? age : '';
+            }
+            document.getElementById('birthDateField').addEventListener('change', calcAge);
+            calcAge();
+        })();
+    </script>
+}
